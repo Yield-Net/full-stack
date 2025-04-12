@@ -14,6 +14,7 @@ fastapi dev main.py  # Or: uvicorn main:app --reload
 
 ### 🌐 Frontend (React + Vite)  
 ```bash
+cd frontend
 npm install  
 npm run dev  
 ```  
