@@ -7,5 +7,6 @@ export type LoginResponse = {
     hasProfile: boolean;
     wallet_address: string;
     balance: number;
+    user_id: string;
 };
 
