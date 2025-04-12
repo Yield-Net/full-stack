@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import { DefaultService } from '@/src/api/services/DefaultService'
+import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,6 +27,9 @@ export default function Home() {
   const [portfolioInputs, setPortfolioInputs] = useState([
     { asset: '', amount: '' }
   ]);
+
+
+ 
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -70,6 +74,9 @@ export default function Home() {
     setPortfolioInputs(updatedInputs);
   };
 
+  const searchParams = useSearchParams();
+  const user_id = searchParams.get('user_id');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -86,6 +93,7 @@ export default function Home() {
 
     // Prepare data to send to the backend
     const profileData = {
+      user_id, 
       risk_tolerance: formData.riskTolerance,
       investment_amount: parseFloat(formData.investmentAmount) || 0,
       investment_currency: formData.investmentCurrency,
@@ -96,7 +104,7 @@ export default function Home() {
       income_source: formData.incomeSource,
       income_amount: formData.incomeAmount ? parseFloat(formData.incomeAmount) : 0,
       jurisdiction: formData.jurisdiction,
-      preferred_activities: formData.preferredActivities
+      preferred_activities: formData.preferredActivities,
     };
 
     console.log('Sending to backend:', profileData);
@@ -415,4 +423,11 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export function FormPage() {
+  const searchParams = useSearchParams();
+  const userid = searchParams.get('userid');
+
+  return <div>User ID: {userid}</div>;
 }

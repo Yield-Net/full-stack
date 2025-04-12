@@ -63,7 +63,8 @@ export default function LoginPage() {
       if (response.hasProfile) {
         router.push('/dashboard');
       } else {
-        router.push('/form');
+
+        router.push(`/form?user_id=${response.user_id}`); // Pass userid as a query parameter
       }
     } catch (err) {
       console.error("Backend error", err);
