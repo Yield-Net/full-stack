@@ -7,6 +7,8 @@ import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { ethers } from "ethers";
 import axios from "axios";
 
+import { useRouter } from 'next/navigation';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -17,6 +19,8 @@ export default function LoginPage() {
   const [provider, setProvider] = useState<any>(null);
   const [userAddress, setUserAddress] = useState<string | null>(null);
   const [ethBalance, setEthBalance] = useState<number | null>(null);
+
+  const router = useRouter(); // Move useRouter here
 
   useEffect(() => {
     const init = async () => {
@@ -52,8 +56,15 @@ export default function LoginPage() {
       const response = await DefaultService.loginUserAuthLoginPost({
         wallet_address: wallet,
       });
+      console.log("Login response", response);
 
       setEthBalance(response.balance);
+
+      if (response.hasProfile) {
+        router.push('/dashboard');
+      } else {
+        router.push('/form');
+      }
     } catch (err) {
       console.error("Backend error", err);
     }
