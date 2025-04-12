@@ -1,14 +1,20 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from models.users import LoginRequest
 from web3 import Web3
+
+from supabase import Client
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE')
 
 router = APIRouter()
 
 INFURA_URL = "https://goerli.infura.io/v3/YOUR_INFURA_KEY"
 web3 = Web3(Web3.HTTPProvider(INFURA_URL))
 
-class LoginRequest(BaseModel):
-    wallet_address: str
 
 @router.post("/auth/login")
 def login_user(data: LoginRequest):
@@ -20,10 +26,19 @@ def login_user(data: LoginRequest):
     try:
         balance_wei = web3.eth.get_balance(wallet)
         balance_eth = web3.from_wei(balance_wei, 'ether')
+        sb = Client(SUPABASE_URL, SUPABASE_KEY)
+        user_data = sb.table("users").select("*").eq("wallet_address", wallet).execute()
+        if user_data.data:
+            user = user_data.data[0]
+            if data.email and user["email"] != data.email:
+                sb.table("users").update({"email": data.email}).eq("wallet_address", wallet).execute()
+        else:
+            sb.table("users").insert({"wallet_address": wallet, "email": data.email}).execute()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
     return {
+        "success": True,
+        "message": "User logged in successfully",
         "wallet_address": wallet,
-        "balance": str(balance_eth),
     }

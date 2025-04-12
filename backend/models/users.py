@@ -90,3 +90,7 @@ class UserProfile(BaseModel):
                 "preferred_activities": ["staking", "lending"]
             }
         }
+
+class LoginRequest(BaseModel):
+    wallet_address: str
+    email: str | None = None
