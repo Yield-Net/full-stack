@@ -7,6 +7,10 @@ import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { ethers } from "ethers";
 import axios from "axios";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+
 export default function LoginPage() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<any>(null);
@@ -82,24 +86,48 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Welcome to Yield Net</h1>
-      {!userAddress ? (
-        <>
-          <button onClick={loginWithMetaMask} style={{ marginBottom: '1rem' }}>
-            Login with MetaMask
-          </button>
-          <br />
-          <button onClick={loginWithGoogle}>
-            Login with Google (Web3Auth)
-          </button>
-        </>
-      ) : (
-        <>
-          <p><strong>Wallet:</strong> {userAddress}</p>
-          <p><strong>Goerli ETH Balance:</strong> {ethBalance ?? 'Loading...'}</p>
-        </>
-      )}
+    <div className="flex justify-center items-center min-h-screen bg-white px-4">
+      <Card className="w-full max-w-md border border-black/10 shadow-none rounded-md">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center text-black font-semibold">
+            Welcome to <span className="italic text-black">Yield Net</span>
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          {!userAddress ? (
+            <div className="space-y-4">
+              <Button
+                onClick={loginWithMetaMask}
+                className="w-full border border-black text-black bg-transparent hover:bg-black hover:text-white transition"
+                variant="ghost"
+              >
+                Login with MetaMask
+              </Button>
+
+              <Separator className="bg-black/10" />
+
+              <Button
+                onClick={loginWithGoogle}
+                className="w-full border border-black text-black bg-transparent hover:bg-black hover:text-white transition"
+                variant="ghost"
+              >
+                Login with Google (Web3Auth)
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-2 text-sm text-black">
+              <p>
+                <span className="font-medium">Wallet:</span> {userAddress}
+              </p>
+              <p>
+                <span className="font-medium">Goerli ETH Balance:</span>{' '}
+                {ethBalance ?? 'Loading...'}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

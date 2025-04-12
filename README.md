@@ -7,9 +7,9 @@ This is a full-stack web application built with **FastAPI** for the backend and 
 ```bash
 cd backend  
 python -m venv venv  
-source venv/bin/activate  # On Windows: venv\Scripts\activate  
+source venv/bin/activate 
 pip install -r requirements.txt  
-fastapi dev main.py  # Or: uvicorn main:app --reload  
+fastapi dev main.py
 ```  
 
 ### 🌐 Frontend (React + Vite)  
