@@ -99,3 +99,4 @@ class LoginResponse(BaseModel):
     success: bool
     hasProfile: bool
     wallet_address: str
+    balance: float

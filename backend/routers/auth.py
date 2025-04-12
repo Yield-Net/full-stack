@@ -46,4 +46,5 @@ def login_user(data: LoginRequest):
         "success": True,
         "hasProfile": hasProfile,
         "wallet_address": wallet,
+        "balance": balance_eth,
     }
