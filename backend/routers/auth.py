@@ -12,8 +12,9 @@ SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE')
 
 router = APIRouter()
 
-INFURA_URL = "https://goerli.infura.io/v3/YOUR_INFURA_KEY"
+INFURA_URL = os.getenv("SEPOLIA_RPC_URL")
 web3 = Web3(Web3.HTTPProvider(INFURA_URL))
+
 
 
 @router.post("/auth/login")
