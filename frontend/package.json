@@ -10,9 +10,13 @@
     "generate-api": "openapi -i http://localhost:8000/openapi.json -o src/api"
   },
   "dependencies": {
+    "@web3auth/base": "^9.7.0",
+    "@web3auth/modal": "^9.7.0",
+    "@web3auth/openlogin-adapter": "^8.12.4",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "ethers": "^6.13.5",
     "lucide-react": "^0.487.0",
     "motion": "^12.6.5",
     "next": "15.3.0",
