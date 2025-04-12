@@ -100,7 +100,7 @@ export default function Home() {
       investment_horizon: formData.investmentHorizon,
       experience_level: formData.experienceLevel,
       investment_goals: formData.investmentGoals,
-      existing_portfolio: formData.hasExistingPortfolio ? processedPortfolio : null,
+      initial_investment: formData.hasExistingPortfolio ? processedPortfolio : null,
       income_source: formData.incomeSource,
       income_amount: formData.incomeAmount ? parseFloat(formData.incomeAmount) : 0,
       jurisdiction: formData.jurisdiction,
