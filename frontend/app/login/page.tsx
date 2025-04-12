@@ -10,12 +10,13 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { DefaultService } from '@/src/api';
 
 export default function LoginPage() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<any>(null);
   const [userAddress, setUserAddress] = useState<string | null>(null);
-  const [ethBalance, setEthBalance] = useState<string | null>(null);
+  const [ethBalance, setEthBalance] = useState<number | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -48,11 +49,11 @@ export default function LoginPage() {
 
   const handleLogin = async (wallet: string) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', {
+      const response = await DefaultService.loginUserAuthLoginPost({
         wallet_address: wallet,
       });
 
-      setEthBalance(response.data.balance);
+      setEthBalance(response.balance);
     } catch (err) {
       console.error("Backend error", err);
     }
