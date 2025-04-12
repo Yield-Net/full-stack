@@ -28,6 +28,14 @@ def generate(profile: UserProfile):
         sb = Client(SUPABASE_URL, SUPABASE_KEY)
         sb.table("user_profiles").insert(profile.model_dump()).execute()
 
+        if profile.initial_investment:
+            for inv in profile.initial_investment:
+                sb.table("user_portfolio").insert({
+                    "user_id": profile.user_id,
+                    "asset": inv.asset,
+                    "amount": inv.amount
+                }).execute()
+
         # Pass preferred activities to market context
         preferred = [a.value for a in profile.preferred_activities]
         market_data = get_filtered_protocols(preferred)

@@ -10,6 +10,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export { DeFiActivity } from './models/DeFiActivity';
 export { ExperienceLevel } from './models/ExperienceLevel';
 export type { HTTPValidationError } from './models/HTTPValidationError';
+export type { InitialInvestment } from './models/InitialInvestment';
 export { InvestmentGoal } from './models/InvestmentGoal';
 export { InvestmentHorizon } from './models/InvestmentHorizon';
 export type { InvestmentRequest } from './models/InvestmentRequest';

@@ -32,14 +32,19 @@ class DeFiActivity(str, Enum):
     LIQUIDITY_PROVIDING = 'liquidity_providing'
     TRADING = 'trading'
 
+class InitialInvestment(BaseModel):
+    asset: str
+    amount: float
+
 class UserProfile(BaseModel):
     user_id: str
     risk_tolerance: RiskTolerance
     investment_amount: float
-    investment_currency: Optional[str] = "USDC"
+    investment_currency: str = "ETH"
     investment_horizon: InvestmentHorizon
     experience_level: ExperienceLevel
     investment_goals: List[InvestmentGoal]
+    initial_investment: Optional[List[InitialInvestment]]
     preferred_activities: List[DeFiActivity]
 
 class Strategy(BaseModel):
