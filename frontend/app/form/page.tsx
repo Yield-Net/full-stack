@@ -179,7 +179,7 @@ export default function Home() {
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black"
                     placeholder="Enter amount"
-                    min="0"
+                    min="0.00001"
                     required
                   />
                 </div>
