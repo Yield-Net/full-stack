@@ -70,3 +70,7 @@ class Protocol(BaseModel):
 
 class MarketResponse(BaseModel):
     protocols: List[Protocol]
+
+class ExecuteStrategyRequest(BaseModel):
+    user_address: str
+    strategy: List[Strategy]
