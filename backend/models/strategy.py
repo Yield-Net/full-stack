@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Dict
 from pydantic import BaseModel
 
 class RiskTolerance(str, Enum):
@@ -32,10 +32,6 @@ class DeFiActivity(str, Enum):
     LIQUIDITY_PROVIDING = 'liquidity_providing'
     TRADING = 'trading'
 
-class InitialInvestment(BaseModel):
-    asset: str
-    amount: float
-
 class UserProfile(BaseModel):
     user_id: str
     risk_tolerance: RiskTolerance
@@ -44,7 +40,7 @@ class UserProfile(BaseModel):
     investment_horizon: InvestmentHorizon
     experience_level: ExperienceLevel
     investment_goals: List[InvestmentGoal]
-    initial_investment: Optional[List[InitialInvestment]]
+    initial_investment: Optional[Dict[str, float]] = None
     preferred_activities: List[DeFiActivity]
 
 class Strategy(BaseModel):

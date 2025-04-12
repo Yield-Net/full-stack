@@ -26,14 +26,14 @@ def get_market_context():
 def generate(profile: UserProfile):
     try:
         sb = Client(SUPABASE_URL, SUPABASE_KEY)
-        sb.table("user_profiles").insert(profile.model_dump()).execute()
+        sb.table("user_profiles").insert(profile.model_dump(exclude={"initial_investment"})).execute()
 
         if profile.initial_investment:
-            for inv in profile.initial_investment:
+            for asset, amount in profile.initial_investment.items():
                 sb.table("user_portfolio").insert({
                     "user_id": profile.user_id,
-                    "asset": inv.asset,
-                    "amount": inv.amount
+                    "asset": asset,
+                    "amount": amount
                 }).execute()
 
         # Pass preferred activities to market context
