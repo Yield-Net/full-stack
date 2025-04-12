@@ -34,11 +34,15 @@ def login_user(data: LoginRequest):
                 sb.table("users").update({"email": data.email}).eq("wallet_address", wallet).execute()
         else:
             sb.table("users").insert({"wallet_address": wallet, "email": data.email}).execute()
+            user = sb.table("users").select("*").eq("wallet_address", wallet).execute().data[0]
+
+        hasProfile = len(sb.table("user_profiles").select("*").eq("user_id", user["id"]).execute().data) > 0
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
     return {
         "success": True,
-        "message": "User logged in successfully",
+        "hasProfile": hasProfile,
         "wallet_address": wallet,
     }
