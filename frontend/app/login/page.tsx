@@ -123,7 +123,7 @@ export default function LoginPage() {
               </p>
               <p>
                 <span className="font-medium">Goerli ETH Balance:</span>{' '}
-                {ethBalance ?? 'Loading...'}
+                {ethBalance !== null ? `${ethBalance} ETH` : 'Loading...'}
               </p>
             </div>
           )}
