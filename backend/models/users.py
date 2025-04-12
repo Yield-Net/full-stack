@@ -100,3 +100,4 @@ class LoginResponse(BaseModel):
     hasProfile: bool
     wallet_address: str
     balance: float
+    user_id: str
