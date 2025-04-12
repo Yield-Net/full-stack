@@ -1,14 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from services.faucet import send_sepolia_eth
+from models.invest import InvestmentRequest, InvestmentResponse
 
 router = APIRouter()
 
-class InvestmentRequest(BaseModel):
-    wallet_address: str
-    amount_eth: float
 
-@router.post("/invest/fund")
+@router.post("/invest/fund", response_model=InvestmentResponse)
 def fund_user_wallet(req: InvestmentRequest):
     try:
         tx_hash = send_sepolia_eth(req.wallet_address, req.amount_eth)

@@ -1,12 +1,12 @@
 # routers/strategies.py - Extended
 from fastapi import APIRouter, HTTPException
-from models.strategy import UserProfile
+from models.strategy import UserProfile, StrategyResponse, MarketResponse
 from services.market_data import get_filtered_protocols
 from services.strategy_gen import generate_strategy
 
 router = APIRouter(prefix="/strategies")
 
-@router.get("/market-context")
+@router.get("/market-context", response_model=MarketResponse)
 def get_market_context():
     try:
         data = get_filtered_protocols()
@@ -14,7 +14,7 @@ def get_market_context():
     except Exception as e:
         return {"error": str(e)}
 
-@router.post("/generate-strategy")
+@router.post("/generate-strategy", response_model=StrategyResponse)
 def generate(profile: UserProfile):
     try:
         # Pass preferred activities to market context

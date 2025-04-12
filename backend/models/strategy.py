@@ -40,3 +40,27 @@ class UserProfile(BaseModel):
     experience_level: ExperienceLevel
     investment_goals: List[InvestmentGoal]
     preferred_activities: List[DeFiActivity]
+
+class Strategy(BaseModel):
+    protocol: str
+    activity: DeFiActivity
+    token: str
+    allocation_percent: float
+    expected_apy: float
+    estimated_return: float
+    risk_level: str
+    why: str
+
+class StrategyResponse(BaseModel):
+    strategy: List[Strategy]
+
+class Protocol(BaseModel):
+    name: str
+    category: str
+    tvl: float
+    chain: List[str]
+    url: str
+    symbol: str
+
+class MarketResponse(BaseModel):
+    protocols: List[Protocol]

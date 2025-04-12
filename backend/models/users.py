@@ -93,4 +93,9 @@ class UserProfile(BaseModel):
 
 class LoginRequest(BaseModel):
     wallet_address: str
-    email: str | None = None
+    email: Optional[str] = None
+
+class LoginResponse(BaseModel):
+    success: bool
+    hasProfile: bool
+    wallet_address: str

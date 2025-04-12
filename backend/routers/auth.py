@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.users import LoginRequest
+from models.users import LoginRequest, LoginResponse
 from web3 import Web3
 
 from supabase import Client
@@ -17,7 +17,7 @@ web3 = Web3(Web3.HTTPProvider(INFURA_URL))
 
 
 
-@router.post("/auth/login")
+@router.post("/auth/login", response_model=LoginResponse)
 def login_user(data: LoginRequest):
     wallet = Web3.to_checksum_address(data.wallet_address)
 
