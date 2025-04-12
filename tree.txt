@@ -1,0 +1,57 @@
+.
+├── README.md
+├── backend
+│   ├── README.md
+│   ├── main.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── strategy.py
+│   │   └── users.py
+│   ├── requirements.txt
+│   ├── routers
+│   │   ├── __init__.py
+│   │   ├── strategies.py
+│   │   └── users.py
+│   └── services
+│       ├── __init__.py
+│       ├── market_data.py
+│       └── strategy_gen.py
+└── frontend
+    ├── README.md
+    ├── app
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   └── page.tsx
+    ├── components.json
+    ├── eslint.config.mjs
+    ├── lib
+    │   └── utils.ts
+    ├── next-env.d.ts
+    ├── next.config.ts
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.mjs
+    ├── src
+    │   └── api
+    │       ├── core
+    │       │   ├── ApiError.ts
+    │       │   ├── ApiRequestOptions.ts
+    │       │   ├── ApiResult.ts
+    │       │   ├── CancelablePromise.ts
+    │       │   ├── OpenAPI.ts
+    │       │   └── request.ts
+    │       ├── index.ts
+    │       ├── models
+    │       │   ├── DeFiActivity.ts
+    │       │   ├── ExperienceLevel.ts
+    │       │   ├── HTTPValidationError.ts
+    │       │   ├── InvestmentGoal.ts
+    │       │   ├── InvestmentHorizon.ts
+    │       │   ├── RiskTolerance.ts
+    │       │   ├── UserProfile.ts
+    │       │   └── ValidationError.ts
+    │       └── services
+    │           └── DefaultService.ts
+    └── tsconfig.json
+
+13 directories, 42 files
