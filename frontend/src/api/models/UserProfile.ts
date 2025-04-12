@@ -7,7 +7,7 @@ import type { ExperienceLevel } from './ExperienceLevel';
 import type { InvestmentGoal } from './InvestmentGoal';
 import type { InvestmentHorizon } from './InvestmentHorizon';
 import type { RiskTolerance } from './RiskTolerance';
-export type models__strategy__UserProfile = {
+export type UserProfile = {
     risk_tolerance: RiskTolerance;
     investment_amount: number;
     investment_currency?: (string | null);
