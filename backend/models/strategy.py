@@ -33,6 +33,7 @@ class DeFiActivity(str, Enum):
     TRADING = 'trading'
 
 class UserProfile(BaseModel):
+    user_id: str
     risk_tolerance: RiskTolerance
     investment_amount: float
     investment_currency: Optional[str] = "USDC"
