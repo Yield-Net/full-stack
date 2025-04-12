@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { LoginRequest } from '../models/LoginRequest';
 import type { UserProfile } from '../models/UserProfile';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -30,6 +31,25 @@ export class DefaultService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/strategies/generate-strategy',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Login User
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static loginUserApiAuthLoginPost(
+        requestBody: LoginRequest,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/auth/login',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
