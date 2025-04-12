@@ -5,7 +5,7 @@ from routers import users, strategies, auth
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(strategies.router)
-app.include_router(auth.router, prefix="/api")
+app.include_router(auth.router)
 
 app.add_middleware(
     CORSMiddleware,
