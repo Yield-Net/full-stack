@@ -6,10 +6,6 @@ from services.strategy_gen import generate_strategy
 
 router = APIRouter(prefix="/strategies")
 
-@router.post("/user-profile")
-def receive_user_profile(profile: UserProfile):
-    return {"message": "User profile received", "data": profile}
-
 @router.get("/market-context")
 def get_market_context():
     try:
