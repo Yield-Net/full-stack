@@ -61,10 +61,10 @@ export default function LoginPage() {
       setEthBalance(response.balance);
 
       if (response.hasProfile) {
-        router.push('/dashboard');
+        router.push(`/dashboard?user_id=${response.user_id}`);
       } else {
 
-        router.push(`/form?user_id=${response.user_id}`); // Pass userid as a query parameter
+        router.push(`/form?user_id=${response.user_id}`); 
       }
     } catch (err) {
       console.error("Backend error", err);
