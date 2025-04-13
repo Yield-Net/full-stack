@@ -1,7 +1,6 @@
-from pydantic import BaseModel, Field, field_validator
-from typing import Dict, List, Optional, Union
-from enum import Enum
-
+from pydantic import BaseModel
+from typing import Optional
+from models.strategy import UserProfile  # Importing from strategy.py
 
 class LoginRequest(BaseModel):
     wallet_address: str
@@ -13,3 +12,7 @@ class LoginResponse(BaseModel):
     wallet_address: str
     balance: float
     user_id: str
+
+class MessageRequest(BaseModel):
+    user_profile: UserProfile
+    user_message: str
