@@ -9,6 +9,7 @@ import { DashboardResponse } from '@/src/api/models/DashboardResponse';
 import StrategyMetrics from '@/components/strategyMetrics';
 import AllocationPieChart from '@/components/allocationPieChart';
 import APYBarChart from '@/components/APYBarChart';
+import ProfileCard from '@/components/profileCard';
 
 export default function Dashboard() {
   const searchParams = useSearchParams();
@@ -93,6 +94,8 @@ export default function Dashboard() {
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold mb-4">DeFi Investment Dashboard</h1>
 
+      <ProfileCard profile={profile} />
+      
       <StrategyMetrics strategy={strategy} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
