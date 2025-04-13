@@ -6,6 +6,7 @@ router = APIRouter()
 
 @router.post("/ai-agent/message")
 async def handle_message(payload: MessageRequest):
+    print(payload)
     user_profile_dict = payload.user_profile.dict()
     message = payload.user_message
 
@@ -13,7 +14,12 @@ async def handle_message(payload: MessageRequest):
 
     if analysis.get("profile_changed"):
         updated_profile = analysis["updated_profile"]
+
+        
         strategy = get_strategy_from_api(updated_profile)
+
+        #db inserts into here
+
         return {
             "message": analysis["response"],
             "profile_changed": True,

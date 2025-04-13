@@ -51,6 +51,7 @@ export default function SidebarChat() {
     });
 
     const data = await res;
+    console.log('AI Response:', data);
 
     const aiResponse: ChatEntry = {
       role: 'ai',

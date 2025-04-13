@@ -8,7 +8,7 @@ import google.generativeai as genai
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
+model = genai.GenerativeModel(model_name="models/gemini-2.5-pro-preview-03-25")
 
 
 def analyse_user_message(user_profile: dict, user_message: str) -> Dict[str, Any]:
