@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type InitialInvestment = {
-    asset: string;
-    amount: number;
+export type ExecuteStrategyRequest = {
+    user_address: string;
 };
 

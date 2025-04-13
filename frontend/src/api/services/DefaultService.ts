@@ -2,12 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ExecuteStrategyRequest } from '../models/ExecuteStrategyRequest';
 import type { InvestmentRequest } from '../models/InvestmentRequest';
 import type { InvestmentResponse } from '../models/InvestmentResponse';
 import type { LoginRequest } from '../models/LoginRequest';
 import type { LoginResponse } from '../models/LoginResponse';
 import type { MarketResponse } from '../models/MarketResponse';
 import type { StrategyResponse } from '../models/StrategyResponse';
+import type { Transaction } from '../models/Transaction';
 import type { UserProfile } from '../models/UserProfile';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -74,6 +76,25 @@ export class DefaultService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/invest/fund',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Execute Strategy
+     * @param requestBody
+     * @returns Transaction Successful Response
+     * @throws ApiError
+     */
+    public static executeStrategyApiStrategyExecutePost(
+        requestBody: ExecuteStrategyRequest,
+    ): CancelablePromise<Array<Transaction>> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/strategy/execute',
             body: requestBody,
             mediaType: 'application/json',
             errors: {

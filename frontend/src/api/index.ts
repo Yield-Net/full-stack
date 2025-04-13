@@ -8,9 +8,9 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export { DeFiActivity } from './models/DeFiActivity';
+export type { ExecuteStrategyRequest } from './models/ExecuteStrategyRequest';
 export { ExperienceLevel } from './models/ExperienceLevel';
 export type { HTTPValidationError } from './models/HTTPValidationError';
-export type { InitialInvestment } from './models/InitialInvestment';
 export { InvestmentGoal } from './models/InvestmentGoal';
 export { InvestmentHorizon } from './models/InvestmentHorizon';
 export type { InvestmentRequest } from './models/InvestmentRequest';
@@ -22,6 +22,7 @@ export type { Protocol } from './models/Protocol';
 export { RiskTolerance } from './models/RiskTolerance';
 export type { Strategy } from './models/Strategy';
 export type { StrategyResponse } from './models/StrategyResponse';
+export type { Transaction } from './models/Transaction';
 export type { UserProfile } from './models/UserProfile';
 export type { ValidationError } from './models/ValidationError';
 
