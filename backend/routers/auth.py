@@ -41,11 +41,13 @@ def login_user(data: LoginRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-    return {
+    
+    result = {
         "success": True,
         "hasProfile": hasProfile,
         "wallet_address": wallet,
         "balance": balance_eth,
         "user_id": user["id"],
     }
+
+    return result
