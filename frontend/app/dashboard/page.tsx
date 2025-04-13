@@ -55,7 +55,21 @@ export default function Dashboard() {
   if (error) return <p>{error}</p>;
   if (!dashboardData) return <p>No data available.</p>;
 
-  console.log('test:', dashboardData.strategies);
+
+  const portfolio = dashboardData.portfolio.map(({ asset, amount }) => ({
+    asset,
+    amount
+  }));
+
+  const profile = {
+    experience_level: dashboardData.profile.experience_level,
+    investment_amount: dashboardData.profile.investment_amount,
+    investment_currency: dashboardData.profile.investment_currency,
+    investment_goals: dashboardData.profile.investment_goals,
+    investment_horizon: dashboardData.profile.investment_horizon,
+    preferred_activities: dashboardData.profile.preferred_activities,
+    risk_tolerance: dashboardData.profile.risk_tolerance
+  };
 
   const strategy = dashboardData.strategies.map((item) => {
     return {
@@ -70,7 +84,10 @@ export default function Dashboard() {
     };
   });
 
-  console.log('strategy:', strategy);
+
+  console.log('portfolio:', portfolio);
+  console.log('profile:', profile);
+  console.log('strategies:', strategy);
 
   return (
     <div className="p-6 space-y-6">

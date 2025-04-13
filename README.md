@@ -102,6 +102,48 @@ npm run dev
 └── README.md               # Project documentation
 ```
 
+## Data 
+// strategies
+[
+  {
+    protocol: 'Lido',
+    activity: 'staking',
+    token: 'ETH',
+    allocation_percent: 70,
+    expected_apy: 4.5,
+    estimated_return: 0.0000315,
+    risk_level: 'low',
+    why: 'Beginner-friendly ETH staking...'
+  },
+  {
+    protocol: 'Aave',
+    activity: 'lending',
+    token: 'ETH',
+    allocation_percent: 30,
+    expected_apy: 2.5,
+    estimated_return: 0.0000075,
+    risk_level: 'low-medium',
+    why: 'Diversification into lending...'
+  }
+]
+
+// portfolio
+[
+  { asset: 'SOL', amount: 0.002 },
+  { asset: 'BTC', amount: 0.02 }
+]
+
+// profile
+{
+  experience_level: 'beginner',
+  investment_amount: 0.001,
+  investment_currency: 'ETH',
+  investment_goals: ['passive_income', 'portfolio_diversification'],
+  investment_horizon: 'medium',
+  preferred_activities: ['staking', 'liquidity_providing'],
+  risk_tolerance: 'moderate'
+}
+
 ## 🛠️ Configuration
 
 The application requires several API keys and configuration parameters:
