@@ -19,6 +19,7 @@ export type { InvestmentResponse } from './models/InvestmentResponse';
 export type { LoginRequest } from './models/LoginRequest';
 export type { LoginResponse } from './models/LoginResponse';
 export type { MarketResponse } from './models/MarketResponse';
+export type { MessageRequest } from './models/MessageRequest';
 export type { Protocol } from './models/Protocol';
 export { RiskTolerance } from './models/RiskTolerance';
 export type { Strategy } from './models/Strategy';
