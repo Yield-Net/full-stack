@@ -52,3 +52,4 @@ def generate(profile: UserProfile):
         return {"strategy": strategy}
     except Exception as e:
         return {"error": str(e)}
+

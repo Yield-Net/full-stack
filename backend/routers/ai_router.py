@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from models.users import MessageRequest
-from services.ai_agent import analyse_user_message, get_strategy_from_api
+from services.ai_agent import analyse_user_message, new_strategy
 
 router = APIRouter()
 
@@ -15,8 +15,9 @@ async def handle_message(payload: MessageRequest):
     if analysis.get("profile_changed"):
         updated_profile = analysis["updated_profile"]
 
-        
-        strategy = get_strategy_from_api(updated_profile)
+        print("\n\nUpdated profile:", updated_profile)
+        strategy = new_strategy(updated_profile)
+        print("\n\nNew strategy:", strategy)
 
         #db inserts into here
 
@@ -24,7 +25,7 @@ async def handle_message(payload: MessageRequest):
             "message": analysis["response"],
             "profile_changed": True,
             "updated_profile": updated_profile,
-            "new_strategy": strategy.get("strategy", [])
+            "new_strategy": strategy
         }
 
     else:

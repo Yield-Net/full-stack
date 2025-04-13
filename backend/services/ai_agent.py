@@ -5,6 +5,8 @@ import requests
 from dotenv import load_dotenv
 from typing import Dict, Any
 import google.generativeai as genai
+from services.market_data import get_filtered_protocols
+from services.strategy_gen import generate_strategy
 
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -70,3 +72,15 @@ def get_strategy_from_api(updated_profile: dict) -> Any:
             "error": "Failed to fetch strategy",
             "details": str(e)
         }
+
+def new_strategy(profile: dict) -> list:
+    try:
+        # Pass preferred activities to market context
+        preferred = [a for a in profile['preferred_activities']]
+        print("Preferred activities:", preferred)
+        market_data = get_filtered_protocols(preferred)
+        strategy = generate_strategy(profile, market_data)
+        
+        return strategy
+    except Exception as e:
+        return []

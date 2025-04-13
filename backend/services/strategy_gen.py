@@ -68,7 +68,6 @@ def extract_json_from_text(text: str) -> list:
 def generate_strategy(user_profile: dict, protocol_data: list) -> list:
     prompt = build_prompt(user_profile, protocol_data)
     response = model.generate_content(prompt)
-
     try:
         return extract_json_from_text(response.text)
     except Exception as e:
