@@ -49,18 +49,19 @@ async def handle_message(payload: MessageRequest):
     
 @router.patch("/ai-agent/update-profile")
 async def update_profile(payload: UpdateProfileRequest):
-    print(payload)
+    print(f'\n\nUpdate profile payload:', payload)
     if payload.user_confirmed:
         try:
             sb = Client(SUPABASE_URL, SUPABASE_KEY)
             user_id = payload.updated_profile.user_id
+            print("\n\nUser ID:", user_id)
 
             # delete old profile and old strategies
             sb.table("user_profiles").delete().eq("user_id", user_id).execute()
             sb.table("user_strategies").delete().eq("user_id", user_id).execute()
 
             # insert new profile and new strategies
-            sb.table("user_profiles").insert(payload.updated_profile.model_dump()).execute()
+            sb.table("user_profiles").insert(payload.updated_profile.model_dump(exclude={"initial_investment"})).execute()
             for s in payload.new_strategy:
                 sb.table("user_strategies").insert({
                     "user_id": user_id,

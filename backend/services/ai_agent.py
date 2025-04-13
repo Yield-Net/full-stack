@@ -30,9 +30,7 @@ Your task is to:
 5. Follow these enums strictly:
 class RiskTolerance(str, Enum):
     CONSERVATIVE = 'conservative'
-    MODERATELY_CONSERVATIVE = 'moderately_conservative'
     MODERATE = 'moderate'
-    MODERATELY_AGGRESSIVE = 'moderately_aggressive'
     AGGRESSIVE = 'aggressive'
 
 class InvestmentHorizon(str, Enum):
