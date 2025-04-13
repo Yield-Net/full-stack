@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ethers } from "ethers";
+import { DefaultService } from "@/src/api";
 
 type StrategyItem = {
   protocol: string;
@@ -28,16 +29,7 @@ export default function ExecuteStrategy({ strategy }: { strategy: StrategyItem[]
       });
 
       // 2. Call your backend to generate the tx from Gemini
-      const response = await fetch("http://localhost:8000/api/strategy/execute", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_address: userAddress,
-          strategy,
-        }),
-      });
+      const response = await DefaultService.executeStrategyApiStrategyExecutePost(userAddress)
 
       const txData = await response.json();
 
