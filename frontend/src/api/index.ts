@@ -26,6 +26,7 @@ export type { Strategy } from './models/Strategy';
 export type { StrategyResponse } from './models/StrategyResponse';
 export type { StrategyWrapper } from './models/StrategyWrapper';
 export type { Transaction } from './models/Transaction';
+export type { UpdateProfileRequest } from './models/UpdateProfileRequest';
 export type { UserPortfolio } from './models/UserPortfolio';
 export type { UserProfile_Input } from './models/UserProfile_Input';
 export type { UserProfile_Output } from './models/UserProfile_Output';

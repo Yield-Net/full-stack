@@ -12,6 +12,7 @@ import type { MarketResponse } from '../models/MarketResponse';
 import type { MessageRequest } from '../models/MessageRequest';
 import type { StrategyResponse } from '../models/StrategyResponse';
 import type { Transaction } from '../models/Transaction';
+import type { UpdateProfileRequest } from '../models/UpdateProfileRequest';
 import type { UserProfile_Input } from '../models/UserProfile_Input';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -136,6 +137,25 @@ export class DefaultService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/ai-agent/message',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Update Profile
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static updateProfileAiAgentUpdateProfilePatch(
+        requestBody: UpdateProfileRequest,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/ai-agent/update-profile',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
