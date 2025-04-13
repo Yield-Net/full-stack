@@ -16,8 +16,9 @@ const riskIcon = {
 export default function StrategyMetrics({ strategy }) {
   if (!strategy || !Array.isArray(strategy) || strategy.length === 0) {
     return (
-      <div className="text-gray-500 text-sm">
-        No strategy selected or strategy is empty.
+      <div className="text-gray-500 text-sm flex flex-col items-center justify-center h-40 bg-gray-50 rounded-lg shadow">
+        <p className="text-lg font-semibold text-gray-700">No Strategy Selected</p>
+        <p className="text-sm text-gray-500">Please select a strategy to view metrics.</p>
       </div>
     );
   }
@@ -37,20 +38,20 @@ export default function StrategyMetrics({ strategy }) {
     <div className="space-y-8">
       {/* Summary Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MetricCard title="Estimated Return" value={`$${totalReturn.toFixed(2)}`} />
-        <MetricCard title="Average APY" value={`${avgApy.toFixed(2)}%`} />
+        <MetricCard title="Total Estimated Return" value={`$${totalReturn.toFixed(2)}`} />
+        <MetricCard title="Average Annual Percentage Yield (APY)" value={`${avgApy.toFixed(2)}%`} />
       </div>
 
       {/* Risk Profile */}
       <div className="bg-white rounded-xl shadow p-6 border">
-        <h4 className="text-base font-semibold text-gray-700 uppercase tracking-wide mb-4 border-b pb-2">
-          Risk Allocation
+        <h4 className="text-lg font-semibold text-gray-700 uppercase tracking-wide mb-4 border-b pb-2">
+          Risk Allocation Overview
         </h4>
         <div className="flex flex-wrap gap-4">
           {Object.entries(riskCounts).map(([level, percent]) => (
             <div
               key={level}
-              className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${riskBadgeColor[level]}`}
+              className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${riskBadgeColor[level]} hover:shadow-md transition-shadow`}
             >
               {riskIcon[level]} <span className="capitalize">{level}</span>: {percent}%
             </div>
@@ -60,12 +61,12 @@ export default function StrategyMetrics({ strategy }) {
 
       {/* Strategy Rationale */}
       <div className="bg-white rounded-xl shadow p-6 border">
-        <h4 className="text-base font-semibold text-gray-700 uppercase tracking-wide mb-4 border-b pb-2">
+        <h4 className="text-lg font-semibold text-gray-700 uppercase tracking-wide mb-4 border-b pb-2">
           Strategy Breakdown
         </h4>
         <ul className="space-y-6">
           {strategy.map((s, idx) => (
-            <li key={idx} className="text-sm text-gray-800 border-b pb-4">
+            <li key={idx} className="text-sm text-gray-800 border-b pb-4 hover:bg-gray-50 transition-colors rounded-lg p-4">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-base font-semibold text-gray-900">
@@ -96,7 +97,7 @@ export default function StrategyMetrics({ strategy }) {
 // Reusable summary card
 function MetricCard({ title, value }) {
   return (
-    <div className="bg-white rounded-xl shadow p-6 border">
+    <div className="bg-white rounded-xl shadow p-6 border hover:shadow-lg transition-shadow">
       <h4 className="text-sm font-semibold tracking-wide text-gray-600 uppercase mb-1">
         {title}
       </h4>

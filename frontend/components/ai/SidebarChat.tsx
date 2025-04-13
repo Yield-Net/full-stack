@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { DefaultService } from '@/src/api';
 
@@ -39,20 +39,21 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
   const [input, setInput] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
     const newUserMessage: ChatEntry = { role: 'user', message: input };
     setChatHistory((prev) => [...prev, newUserMessage]);
+    setInput(''); // Clear the input field immediately after adding the message to the chat history
     setLoading(true);
 
-    
     const userProfile = {
       user_id: userId,
       ...profile,
     };
-    
+
     console.log("userProfile", userProfile);
     const res = await DefaultService.handleMessageAiAgentMessagePost({
       user_profile: userProfile,
@@ -68,9 +69,17 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
     };
 
     setChatHistory((prev) => [...prev, aiResponse]);
-    setInput('');
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [chatHistory]);
 
   const renderStrategyCard = (strategy: Strategy) => (
     <div
@@ -99,7 +108,10 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
           <button onClick={() => setOpen(false)} className="text-lg">×</button>
         </div>
 
-        <div className="p-4 flex flex-col space-y-4 h-[calc(100%-120px)] overflow-y-auto">
+        <div
+          ref={chatContainerRef}
+          className="p-4 flex flex-col space-y-4 h-[calc(100%-120px)] overflow-y-auto scroll-smooth pb-20" // Added pb-20 for padding
+        >
           {chatHistory.map((chat, index) => (
             <div key={index} className={clsx(
               "flex flex-col",
