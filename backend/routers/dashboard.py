@@ -13,7 +13,7 @@ SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE')
 
 router = APIRouter()
 
-@router.post("/strategy/execute", response_model=list[Transaction])
+@router.post("/strategy/execute", response_model=Transaction)
 async def execute_strategy(request: ExecuteStrategyRequest):
     try:
         
@@ -29,7 +29,7 @@ async def execute_strategy(request: ExecuteStrategyRequest):
             tx = get_transaction_from_strategy(s['strategy_data'], request.user_address)
             results.append(tx)
 
-        return results
+        return results[request.idx]
     except Exception as e:
         return {"error": str(e)}
 

@@ -69,6 +69,7 @@ class MarketResponse(BaseModel):
 
 class ExecuteStrategyRequest(BaseModel):
     user_address: str
+    idx: int = 0
 
 class Transaction(BaseModel):
     to: str
