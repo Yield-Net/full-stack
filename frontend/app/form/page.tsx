@@ -6,6 +6,8 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { DefaultService } from '@/src/api/services/DefaultService'
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +30,7 @@ export default function Home() {
     { asset: '', amount: '' }
   ]);
 
+  const router = useRouter(); // Move useRouter here
 
  
 
@@ -108,6 +111,7 @@ export default function Home() {
     };
 
     console.log('Sending to backend:', profileData);
+    console.log('User ID:', user_id);
 
     try {
       // Send data to your backend
@@ -116,6 +120,9 @@ export default function Home() {
       
       // Redirect to dashboard or results page
       // router.push('/dashboard');
+      
+      router.push(`/dashboard?user_id=${user_id}`);
+      
     } catch (error) {
       console.error('Error submitting profile:', error);
       alert('There was an error submitting your profile. Please try again.');
@@ -423,11 +430,4 @@ export default function Home() {
       </main>
     </div>
   );
-}
-
-export function FormPage() {
-  const searchParams = useSearchParams();
-  const userid = searchParams.get('userid');
-
-  return <div>User ID: {userid}</div>;
 }
