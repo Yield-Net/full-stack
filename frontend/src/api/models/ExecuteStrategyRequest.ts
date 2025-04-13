@@ -4,5 +4,6 @@
 /* eslint-disable */
 export type ExecuteStrategyRequest = {
     user_address: string;
+    idx: number;
 };
 

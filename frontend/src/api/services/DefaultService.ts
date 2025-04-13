@@ -9,6 +9,7 @@ import type { InvestmentResponse } from '../models/InvestmentResponse';
 import type { LoginRequest } from '../models/LoginRequest';
 import type { LoginResponse } from '../models/LoginResponse';
 import type { MarketResponse } from '../models/MarketResponse';
+import type { MessageRequest } from '../models/MessageRequest';
 import type { StrategyResponse } from '../models/StrategyResponse';
 import type { Transaction } from '../models/Transaction';
 import type { UserProfile_Input } from '../models/UserProfile_Input';
@@ -92,7 +93,7 @@ export class DefaultService {
      */
     public static executeStrategyStrategyExecutePost(
         requestBody: ExecuteStrategyRequest,
-    ): CancelablePromise<Array<Transaction>> {
+    ): CancelablePromise<Transaction> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/strategy/execute',
@@ -118,6 +119,25 @@ export class DefaultService {
             query: {
                 'user_id': userId,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Handle Message
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static handleMessageAiAgentMessagePost(
+        requestBody: MessageRequest,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/ai-agent/message',
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },

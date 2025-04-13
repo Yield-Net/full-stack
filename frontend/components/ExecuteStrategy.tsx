@@ -15,7 +15,7 @@ type StrategyItem = {
   why: string;
 };
 
-export default function ExecuteStrategy({ strategy }: { strategy: StrategyItem[] }) {
+export default function ExecuteStrategy({ idx }: { idx: number }) {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +29,10 @@ export default function ExecuteStrategy({ strategy }: { strategy: StrategyItem[]
       });
 
       // 2. Call your backend to generate the tx from Gemini
-      const response = await DefaultService.executeStrategyApiStrategyExecutePost(userAddress)
+      const response = await DefaultService.executeStrategyStrategyExecutePost({
+        user_address: userAddress,
+        idx: idx
+      })
 
       const txData = await response.json();
 
