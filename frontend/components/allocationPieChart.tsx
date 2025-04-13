@@ -12,11 +12,11 @@ import {
   CardFooter,
 } from '@/components/ui/card'
 
+import { Tooltip } from 'recharts';
 import {
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart'
+} from '@/components/ui/chart';
 
 // ✅ Vibrant colors (Tailwind style)
 const COLORS = [
@@ -45,7 +45,7 @@ export default function AllocationPieChart({ data }: { data: any[] }) {
               <PieChart>
                 {/* Only show tooltip if data exists */}
                 {!isEmpty && (
-                  <ChartTooltip content={() => ChartTooltipContent({})} />
+                  <Tooltip content={<ChartTooltipContent />} />
                 )}
                 <Pie
                   data={isEmpty ? [] : data}
