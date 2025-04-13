@@ -20,7 +20,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: 'https://full-stack-indol-six.vercel.app',
+    BASE: 'https://yield-net-backend.onrender.com',
     VERSION: '0.1.0',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
