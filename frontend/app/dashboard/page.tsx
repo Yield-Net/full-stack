@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-
+import SidebarChat from "@/components/ai/SidebarChat";
 import { DefaultService } from '@/src/api/services/DefaultService';
 import { DashboardResponse } from '@/src/api/models/DashboardResponse';
 
@@ -99,6 +99,7 @@ export default function Dashboard() {
         <AllocationPieChart data={strategy} />
         <APYBarChart data={strategy} />
       </div>
+      <SidebarChat />
     </div>
   );
 }

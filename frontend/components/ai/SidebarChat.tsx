@@ -81,13 +81,6 @@ export default function SidebarChat() {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition z-50"
-      >
-        {open ? '✕' : 'AI'}
-      </button>
-
       <div className={clsx(
         "fixed right-0 top-0 h-full w-[420px] bg-zinc-900 text-white transform transition-transform duration-300 shadow-2xl z-40",
         open ? "translate-x-0" : "translate-x-full"
@@ -97,7 +90,7 @@ export default function SidebarChat() {
           <button onClick={() => setOpen(false)} className="text-lg">×</button>
         </div>
 
-        <div className="p-4 flex flex-col space-y-4 h-[calc(100%-150px)] overflow-y-auto">
+        <div className="p-4 flex flex-col space-y-4 h-[calc(100%-120px)] overflow-y-auto">
           {chatHistory.map((chat, index) => (
             <div key={index} className={clsx(
               "flex flex-col",
@@ -123,7 +116,7 @@ export default function SidebarChat() {
           )}
         </div>
 
-        <div className="p-4 border-t border-zinc-700">
+        <div className="p-4 border-t border-zinc-700 fixed bottom-0 w-[420px] bg-zinc-900">
           <input
             type="text"
             className="w-full p-2 bg-zinc-800 rounded-md mb-2"
@@ -141,6 +134,13 @@ export default function SidebarChat() {
           </button>
         </div>
       </div>
+
+      <button
+        onClick={() => setOpen(!open)}
+        className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition z-50 w-14 h-14 flex items-center justify-center"
+      >
+        {open ? '✕' : 'AI'}
+      </button>
     </>
   );
 }
