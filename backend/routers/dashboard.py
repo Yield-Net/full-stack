@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from models.strategy import ExecuteStrategyRequest, Transaction
+from models.dashboard import DashboardResponse
 from services.gemini_service import get_transaction_from_strategy
 
 from supabase import Client
@@ -12,7 +13,7 @@ SUPABASE_KEY = os.getenv('SUPABASE_SERVICE_ROLE')
 
 router = APIRouter()
 
-@router.post("/api/strategy/execute", response_model=list[Transaction])
+@router.post("/strategy/execute", response_model=list[Transaction])
 async def execute_strategy(request: ExecuteStrategyRequest):
     try:
         
@@ -29,5 +30,26 @@ async def execute_strategy(request: ExecuteStrategyRequest):
             results.append(tx)
 
         return results
+    except Exception as e:
+        return {"error": str(e)}
+
+@router.get("/dashboard", response_model=DashboardResponse)
+def get_dashboard(user_id: str):
+    try:
+        sb = Client(SUPABASE_URL, SUPABASE_KEY)
+        user_data = sb.table("users").select("*").eq("id", user_id).execute()
+        if not user_data.data:
+            return {"error": "User not found"}
+        
+        user = user_data.data[0]
+        profile_data = sb.table("user_profiles").select("risk_tolerance, investment_amount, investment_currency, investment_horizon, experience_level, investment_goals, preferred_activities").eq("user_id", user["id"]).execute()
+        portfolio_data = sb.table("user_portfolio").select("asset, amount").eq("user_id", user["id"]).execute()
+        strategies_data = sb.table("user_strategies").select("strategy_data").eq("user_id", user["id"]).execute()
+
+        return {
+            "profile": profile_data.data[0],
+            "portfolio": portfolio_data.data,
+            "strategies": strategies_data.data,
+        }
     except Exception as e:
         return {"error": str(e)}

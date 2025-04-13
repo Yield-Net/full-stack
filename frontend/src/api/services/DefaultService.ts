@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { DashboardResponse } from '../models/DashboardResponse';
 import type { ExecuteStrategyRequest } from '../models/ExecuteStrategyRequest';
 import type { InvestmentRequest } from '../models/InvestmentRequest';
 import type { InvestmentResponse } from '../models/InvestmentResponse';
@@ -10,7 +11,7 @@ import type { LoginResponse } from '../models/LoginResponse';
 import type { MarketResponse } from '../models/MarketResponse';
 import type { StrategyResponse } from '../models/StrategyResponse';
 import type { Transaction } from '../models/Transaction';
-import type { UserProfile } from '../models/UserProfile';
+import type { UserProfile_Input } from '../models/UserProfile_Input';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -33,7 +34,7 @@ export class DefaultService {
      * @throws ApiError
      */
     public static generateStrategiesGenerateStrategyPost(
-        requestBody: UserProfile,
+        requestBody: UserProfile_Input,
     ): CancelablePromise<StrategyResponse> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -89,14 +90,34 @@ export class DefaultService {
      * @returns Transaction Successful Response
      * @throws ApiError
      */
-    public static executeStrategyApiStrategyExecutePost(
+    public static executeStrategyStrategyExecutePost(
         requestBody: ExecuteStrategyRequest,
     ): CancelablePromise<Array<Transaction>> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/strategy/execute',
+            url: '/strategy/execute',
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Dashboard
+     * @param userId
+     * @returns DashboardResponse Successful Response
+     * @throws ApiError
+     */
+    public static getDashboardDashboardGet(
+        userId: string,
+    ): CancelablePromise<DashboardResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/dashboard',
+            query: {
+                'user_id': userId,
+            },
             errors: {
                 422: `Validation Error`,
             },
