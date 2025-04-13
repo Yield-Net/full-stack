@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel(model_name="models/gemini-1.5-pro-latest")
+model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
 
 def build_prompt(user_profile: dict, protocol_data: list) -> str:
     return f"""
@@ -21,7 +21,7 @@ Only suggest protocols that are active, Ethereum-based, with lending or staking.
 {json.dumps(user_profile, indent=2)}
 
 --- Market Data ---
-{json.dumps(protocol_data[:20], indent=2)}
+{json.dumps(protocol_data, indent=2)}
 
 Your strategy should include:
 - Protocol name

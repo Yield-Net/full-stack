@@ -27,6 +27,36 @@ Your task is to:
 2. Determine whether the message is related to crypto/DeFi or not.
 3. If related to crypto but no change is needed, respond appropriately.
 4. If not related to crypto, respond politely and mention that.
+5. Follow these enums strictly:
+class RiskTolerance(str, Enum):
+    CONSERVATIVE = 'conservative'
+    MODERATELY_CONSERVATIVE = 'moderately_conservative'
+    MODERATE = 'moderate'
+    MODERATELY_AGGRESSIVE = 'moderately_aggressive'
+    AGGRESSIVE = 'aggressive'
+
+class InvestmentHorizon(str, Enum):
+    SHORT = 'short'
+    MEDIUM = 'medium'
+    LONG = 'long'
+
+class ExperienceLevel(str, Enum):
+    BEGINNER = 'beginner'
+    INTERMEDIATE = 'intermediate'
+    ADVANCED = 'advanced'
+
+class InvestmentGoal(str, Enum):
+    PASSIVE_INCOME = 'passive_income'
+    CAPITAL_GROWTH = 'capital_growth'
+    WEALTH_PRESERVATION = 'wealth_preservation'
+    PORTFOLIO_DIVERSIFICATION = 'portfolio_diversification'
+
+class DeFiActivity(str, Enum):
+    STAKING = 'staking'
+    YIELD_FARMING = 'yield_farming'
+    LENDING = 'lending'
+    LIQUIDITY_PROVIDING = 'liquidity_providing'
+    TRADING = 'trading'
 
 Respond ONLY with valid JSON, in the following structure:
 
@@ -57,21 +87,6 @@ Do not include any other commentary.
             "response": "Sorry, I couldn’t process that. Could you try rephrasing your message?"
         }
 
-
-def get_strategy_from_api(updated_profile: dict) -> Any:
-    try:
-        res = requests.post(
-            url="http://localhost:8000/strategies/generate-strategy",
-            json=updated_profile,
-            timeout=10
-        )
-        res.raise_for_status()
-        return res.json()
-    except Exception as e:
-        return {
-            "error": "Failed to fetch strategy",
-            "details": str(e)
-        }
 
 def new_strategy(profile: dict) -> list:
     try:
