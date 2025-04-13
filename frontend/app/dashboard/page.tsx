@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import SidebarChat from "@/components/ai/SidebarChat";
 import { DefaultService } from '@/src/api/services/DefaultService';
@@ -11,7 +11,67 @@ import AllocationPieChart from '@/components/allocationPieChart';
 import APYBarChart from '@/components/APYBarChart';
 import ProfileCard from '@/components/profileCard';
 
-export default function Dashboard() {
+// Loading skeleton component for dashboard
+function DashboardSkeleton() {
+  return (
+    <div className="p-6 space-y-6">
+      <div className="h-8 bg-gray-200 w-1/3 rounded animate-pulse mb-4"></div>
+      
+      {/* ProfileCard skeleton */}
+      <div className="border border-gray-200 rounded-lg p-4 shadow-sm mb-6 animate-pulse">
+        <div className="h-6 bg-gray-200 w-1/4 rounded mb-4"></div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-4 bg-gray-200 w-1/2 rounded"></div>
+              <div className="h-6 bg-gray-200 w-3/4 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* StrategyMetrics skeleton */}
+      <div className="border border-gray-200 rounded-lg p-4 shadow-sm mb-6 animate-pulse">
+        <div className="h-6 bg-gray-200 w-1/4 rounded mb-4"></div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="p-3 border rounded-lg shadow-sm">
+              <div className="h-4 bg-gray-200 w-1/2 rounded mb-2"></div>
+              <div className="h-8 bg-gray-200 w-3/4 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Charts skeleton */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="border border-gray-200 rounded-lg p-4 shadow-sm h-64 flex items-center justify-center">
+          <div className="rounded-full h-48 w-48 bg-gray-200 animate-pulse"></div>
+        </div>
+        <div className="border border-gray-200 rounded-lg p-4 shadow-sm h-64">
+          <div className="h-full flex items-end space-x-2 pt-8">
+            {[...Array(5)].map((_, i) => (
+              <div 
+                key={i} 
+                className="bg-gray-200 rounded-t animate-pulse w-1/6" 
+                style={{ height: `${Math.random() * 70 + 20}%` }}
+              ></div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Chat skeleton */}
+      <div className="border border-gray-200 rounded-lg p-4 shadow-sm animate-pulse">
+        <div className="h-6 bg-gray-200 w-1/4 rounded mb-4"></div>
+        <div className="h-48 bg-gray-100 rounded"></div>
+      </div>
+    </div>
+  );
+}
+
+// Main dashboard content component
+function DashboardContent() {
   const searchParams = useSearchParams();
   const userId = searchParams.get('user_id');
 
@@ -52,9 +112,9 @@ export default function Dashboard() {
     };
   }, [userId]); // ✅ only depend on userId
 
-  if (loading) return <p>Loading dashboard...</p>;
-  if (error) return <p>{error}</p>;
-  if (!dashboardData) return <p>No data available.</p>;
+  if (loading) return <DashboardSkeleton />;
+  if (error) return <div className="p-6"><div className="bg-red-100 text-red-700 p-4 rounded-lg">{error}</div></div>;
+  if (!dashboardData) return <div className="p-6"><div className="bg-yellow-100 text-yellow-700 p-4 rounded-lg">No data available.</div></div>;
 
 
   const portfolio = dashboardData.portfolio.map(({ asset, amount }) => ({
@@ -85,11 +145,6 @@ export default function Dashboard() {
     };
   });
 
-
-  console.log('portfolio:', portfolio);
-  console.log('profile:', profile);
-  console.log('strategies:', strategy);
-
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold mb-4">DeFi Investment Dashboard</h1>
@@ -104,5 +159,53 @@ export default function Dashboard() {
       </div>
       <SidebarChat profile={profile} userId={userId} />
     </div>
+  );
+}
+
+// Error Boundary component
+function ErrorBoundary({ children }: { children: React.ReactNode }) {
+  const [hasError, setHasError] = useState(false);
+  
+  useEffect(() => {
+    const handleError = (error: ErrorEvent) => {
+      console.error('Caught error:', error);
+      setHasError(true);
+    };
+    
+    window.addEventListener('error', handleError);
+    
+    return () => {
+      window.removeEventListener('error', handleError);
+    };
+  }, []);
+  
+  if (hasError) {
+    return (
+      <div className="p-6">
+        <div className="bg-red-100 text-red-700 p-4 rounded-lg">
+          <h2 className="text-xl font-bold mb-2">Something went wrong</h2>
+          <p>There was an error loading the dashboard. Please try refreshing the page.</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
+  return children;
+}
+
+// Main Dashboard component with Suspense boundary
+export default function Dashboard() {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 }

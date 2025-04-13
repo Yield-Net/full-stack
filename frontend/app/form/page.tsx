@@ -2,14 +2,43 @@
 /* eslint-disable */
 
 'use client';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Head from 'next/head';
 import { DefaultService } from '@/src/api/services/DefaultService'
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
+// Loading fallback component
+function ProfileFormSkeleton() {
+  return (
+    <div className="min-h-screen bg-white text-black">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto animate-pulse"></div>
+          </div>
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
+            <div className="space-y-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                  <div className="h-10 bg-gray-200 rounded w-full"></div>
+                </div>
+              ))}
+              <div className="text-center">
+                <div className="h-12 bg-gray-200 rounded w-1/3 mx-auto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-export default function Home() {
+// Main profile form component
+function ProfileForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     riskTolerance: 'moderate',
@@ -30,9 +59,7 @@ export default function Home() {
     { asset: '', amount: '' }
   ]);
 
-  const router = useRouter(); // Move useRouter here
-
- 
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -118,9 +145,7 @@ export default function Home() {
       const response = await DefaultService.generateStrategiesGenerateStrategyPost(profileData);
       console.log('Response from backend:', response);
       
-      // Redirect to dashboard or results page
-      // router.push('/dashboard');
-      
+      // Redirect to dashboard
       router.push(`/dashboard?user_id=${user_id}`);
       
     } catch (error) {
@@ -429,5 +454,14 @@ export default function Home() {
         </div>
       </main>
     </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function Home() {
+  return (
+    <Suspense fallback={<ProfileFormSkeleton />}>
+      <ProfileForm />
+    </Suspense>
   );
 }
