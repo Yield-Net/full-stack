@@ -24,12 +24,11 @@ async def execute_strategy(request: ExecuteStrategyRequest):
         user_id = sb.table('users').select('id').eq('wallet_address', request.user_address).execute().data[0]['id']
         strategy =  sb.table('user_strategies').select('strategy_data').eq('user_id', user_id).execute()
         
-        results = []
-        for s in strategy.data:
-            tx = get_transaction_from_strategy(s['strategy_data'], request.user_address)
-            results.append(tx)
+        for i, s in enumerate(strategy.data):
+            if i == request.idx:
+                tx = get_transaction_from_strategy(s['strategy_data'], request.user_address)
 
-        return results[request.idx]
+        return tx
     except Exception as e:
         return {"error": str(e)}
 
