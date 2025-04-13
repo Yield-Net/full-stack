@@ -34,7 +34,7 @@ export default function ExecuteStrategy({ idx }: { idx: number }) {
         idx: idx
       })
 
-      const txData = await response.json();
+      const txData = await response;
 
       if (txData.error) {
         alert("Backend Error: " + txData.error);

@@ -28,14 +28,14 @@ def login_user(data: LoginRequest):
         balance_wei = web3.eth.get_balance(wallet)
         balance_eth = web3.from_wei(balance_wei, 'ether')
         sb = Client(SUPABASE_URL, SUPABASE_KEY)
-        user_data = sb.table("users").select("*").eq("wallet_address", wallet).execute()
+        user_data = sb.table("users").select("*").eq("wallet_address", wallet.lower()).execute()
         if user_data.data:
             user = user_data.data[0]
             if data.email and user["email"] != data.email:
-                sb.table("users").update({"email": data.email}).eq("wallet_address", wallet).execute()
+                sb.table("users").update({"email": data.email}).eq("wallet_address", wallet.lower()).execute()
         else:
-            sb.table("users").insert({"wallet_address": wallet, "email": data.email}).execute()
-            user = sb.table("users").select("*").eq("wallet_address", wallet).execute().data[0]
+            sb.table("users").insert({"wallet_address": wallet.lower(), "email": data.email}).execute()
+            user = sb.table("users").select("*").eq("wallet_address", wallet.lower()).execute().data[0]
 
         hasProfile = len(sb.table("user_profiles").select("*").eq("user_id", user["id"]).execute().data) > 0
 

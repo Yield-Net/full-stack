@@ -19,9 +19,9 @@ async def execute_strategy(request: ExecuteStrategyRequest):
         
         # NOTE: you can load the user's strategy from DB here instead of using request.strategy directly
         # For now we assume the strategy was passed directly
-        
+        print(request.user_address)
         sb = Client(SUPABASE_URL, SUPABASE_KEY)
-        user_id = sb.table('users').select('id').eq('wallet_address', request.user_address).execute().data[0]['id']
+        user_id = sb.table('users').select('id').eq('wallet_address', request.user_address.lower()).execute().data[0]['id']
         strategy =  sb.table('user_strategies').select('strategy_data').eq('user_id', user_id).execute()
         
         for i, s in enumerate(strategy.data):
