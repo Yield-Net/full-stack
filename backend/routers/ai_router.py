@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.user import MessageRequest
+from models.users import MessageRequest
 from services.ai_agent import analyse_user_message, get_strategy_from_api
 
 router = APIRouter()
