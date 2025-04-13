@@ -1,76 +1,86 @@
 'use client';
-import ExecuteStrategy from "@/components/ExecuteStrategy";
 
-import { useState } from 'react';
-import StrategySelector from '@/components/strategySelector';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+import { DefaultService } from '@/src/api/services/DefaultService';
+import { DashboardResponse } from '@/src/api/models/DashboardResponse';
+
+import StrategyMetrics from '@/components/strategyMetrics';
 import AllocationPieChart from '@/components/allocationPieChart';
 import APYBarChart from '@/components/APYBarChart';
-import StrategyMetrics from '@/components/strategyMetrics';
-
-// Sample strategies — you can replace this with a fetch from your backend
-const strategies = {
-  conservative: [
-    {
-      protocol: "Aave",
-      activity: "lending",
-      token: "USDC",
-      allocation_percent: 100,
-      expected_apy: 3.5,
-      estimated_return: 11.62,
-      risk_level: "low",
-      why: "Stable and safe protocol"
-    }
-  ],
-  balanced: [
-    {
-      protocol: "Aave",
-      activity: "lending",
-      token: "USDC",
-      allocation_percent: 60,
-      expected_apy: 5.1,
-      estimated_return: 30.6,
-      risk_level: "low",
-      why: "Safe lending option"
-    },
-    {
-      protocol: "Lido",
-      activity: "staking",
-      token: "ETH",
-      allocation_percent: 40,
-      expected_apy: 4.2,
-      estimated_return: 20.1,
-      risk_level: "medium",
-      why: "Liquid staking"
-    }
-  ],
-  aggressive: [
-    {
-      protocol: "GMX",
-      activity: "staking",
-      token: "ARB",
-      allocation_percent: 100,
-      expected_apy: 14.3,
-      estimated_return: 47.5,
-      risk_level: "high",
-      why: "High yield, higher risk"
-    }
-  ]
-};
 
 export default function Dashboard() {
-  const [selectedStrategy, setSelectedStrategy] = useState('balanced');
-  const strategyData = strategies[selectedStrategy];
+  const searchParams = useSearchParams();
+  const userId = searchParams.get('user_id');
+
+  const [dashboardData, setDashboardData] = useState<DashboardResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true; // ✅ prevent setting state after unmount
+
+    if (!userId) {
+      if (isMounted) {
+        setError('No user ID provided');
+        setLoading(false);
+      }
+      return;
+    }
+
+    const fetchDashboardData = async () => {
+      try {
+        const data = await DefaultService.getDashboardDashboardGet(userId);
+        if (isMounted) {
+          setDashboardData(data);
+          console.log('Dashboard data:', data);
+        }
+      } catch (err: any) {
+        console.error(err);
+        if (isMounted) setError('Failed to fetch dashboard data');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+
+    return () => {
+      isMounted = false; // cleanup
+    };
+  }, [userId]); // ✅ only depend on userId
+
+  if (loading) return <p>Loading dashboard...</p>;
+  if (error) return <p>{error}</p>;
+  if (!dashboardData) return <p>No data available.</p>;
+
+  console.log('test:', dashboardData.strategies);
+
+  const strategy = dashboardData.strategies.map((item) => {
+    return {
+      protocol: item.strategy_data.protocol,
+      activity: item.strategy_data.activity,
+      token: item.strategy_data.token,
+      allocation_percent: item.strategy_data.allocation_percent,
+      expected_apy: item.strategy_data.expected_apy,
+      estimated_return: item.strategy_data.estimated_return,
+      risk_level: item.strategy_data.risk_level,
+      why: item.strategy_data.why
+    };
+  });
+
+  console.log('strategy:', strategy);
 
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold mb-4">DeFi Investment Dashboard</h1>
-      <StrategySelector onSelect={setSelectedStrategy} />
 
-      <StrategyMetrics strategy={strategyData} />
-      
+      <StrategyMetrics strategy={strategy} />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AllocationPieChart data={strategyData} />
-        <APYBarChart data={strategyData} />
+        <AllocationPieChart data={strategy} />
+        <APYBarChart data={strategy} />
       </div>
     </div>
   );
