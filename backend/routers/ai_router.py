@@ -63,6 +63,7 @@ async def update_profile(payload: UpdateProfileRequest):
             # insert new profile and new strategies
             sb.table("user_profiles").insert(payload.updated_profile.model_dump(exclude={"initial_investment"})).execute()
             for s in payload.new_strategy:
+                s = s.model_dump()
                 sb.table("user_strategies").insert({
                     "user_id": user_id,
                     "strategy_data": s,
