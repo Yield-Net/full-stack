@@ -1,6 +1,5 @@
 import { CheckCircle, AlertCircle, Flame } from 'lucide-react';
 import ExecuteStrategy from './ExecuteStrategy';
-import { Button } from './ui/button';
 
 const riskBadgeColor = {
   low: "bg-green-100 text-green-800",
