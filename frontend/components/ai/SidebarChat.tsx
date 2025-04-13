@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import clsx from 'clsx';
+import { DefaultService } from '@/src/api';
 
 type Strategy = {
   protocol: string;
@@ -44,16 +45,12 @@ export default function SidebarChat() {
       preferred_activities: ['lending', 'staking', 'liquidity_providing'],
     };
 
-    const res = await fetch('/api/ai-agent/message', {
-      method: 'POST',
-      body: JSON.stringify({
-        user_profile: userProfile,
-        user_message: input,
-      }),
-      headers: { 'Content-Type': 'application/json' },
+    const res = await DefaultService.handleMessageAiAgentMessagePost({
+      user_profile: userProfile,
+      user_message: input
     });
 
-    const data = await res.json();
+    const data = await res;
 
     const aiResponse: ChatEntry = {
       role: 'ai',
