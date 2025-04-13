@@ -18,10 +18,17 @@ async def handle_message(payload: MessageRequest):
             "message": analysis["response"],
             "profile_changed": True,
             "updated_profile": updated_profile,
-            "new_strategy": strategy
+            "new_strategy": strategy.get("strategy", [])
         }
+
     else:
+        is_crypto = analysis.get("crypto_related", False)
+        base_msg = analysis.get("response", "Got your message!")
+
+        if not is_crypto:
+            base_msg = f"This isn’t related to crypto, but here’s my take: {base_msg}"
+
         return {
-            "message": analysis["response"],
+            "message": base_msg,
             "profile_changed": False
         }
