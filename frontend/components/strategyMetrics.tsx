@@ -1,4 +1,6 @@
 import { CheckCircle, AlertCircle, Flame } from 'lucide-react';
+import ExecuteStrategy from './ExecuteStrategy';
+import { Button } from './ui/button';
 
 const riskBadgeColor = {
   low: "bg-green-100 text-green-800",
@@ -83,6 +85,9 @@ export default function StrategyMetrics({ strategy }) {
                 </div>
               </div>
               <p className="text-sm text-gray-500 mt-2">{s.why}</p>
+
+              {/* Execute Strategy Button */}
+              <ExecuteStrategy idx={idx} />
             </li>
           ))}
         </ul>
