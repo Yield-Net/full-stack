@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import List, Optional, Dict
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class RiskTolerance(str, Enum):
     CONSERVATIVE = 'conservative'
@@ -69,4 +69,12 @@ class MarketResponse(BaseModel):
 
 class ExecuteStrategyRequest(BaseModel):
     user_address: str
-    strategy: List[Strategy]
+
+class Transaction(BaseModel):
+    to: str
+    from_: str = Field(..., alias='from')
+    data: str
+    value: str
+    gas: str
+    gasPrice: str
+
