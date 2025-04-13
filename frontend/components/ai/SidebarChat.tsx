@@ -4,9 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { DefaultService } from '@/src/api';
 
+import { Strategy as ApiStrategy } from '@/src/api/models/Strategy';
+
 type Strategy = {
   protocol: string;
-  activity: string;
+  activity: ApiStrategy['activity']; // Use the type from the API
   token: string;
   allocation_percent: number;
   expected_apy: number;
@@ -39,6 +41,9 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
   const [input, setInput] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [profileChanged, setProfileChanged] = useState(false); // New state for profile change
+  const [updatedProfile, setUpdatedProfile] = useState(null); // State to store updated profile
+  const [newStrategy, setNewStrategy] = useState<Strategy[] | null>(null); // State to store new strategy
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
@@ -61,7 +66,18 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
     });
 
     const data = await res;
-    console.log("AI response", data);
+
+    console.log("AI data: ", data.new_strategy);
+    console.log("AI updated profile: ", data.updated_profile);
+    console.log("profile changed: ", data.profile_changed);
+
+    if (data.profile_changed) {
+      setProfileChanged(true); // Set profileChanged to true if profile has changed
+      setUpdatedProfile(data.updated_profile); // Store updated profile
+      setNewStrategy(data.new_strategy || null); // Store new strategy
+      console.log("Please click the button to accept the changes.");
+
+    }
 
     const aiResponse: ChatEntry = {
       role: 'ai',
@@ -71,6 +87,32 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
 
     setChatHistory((prev) => [...prev, aiResponse]);
     setLoading(false);
+  };
+
+  const handleAcceptProfileChanges = async () => {
+    if (!updatedProfile || !newStrategy) {
+      console.error('Invalid data:', { updatedProfile, newStrategy });
+      alert('Updated profile or strategy is missing.');
+      return;
+    }
+  
+    // Validate and structure the payload
+    const payload = {
+      updated_profile: updatedProfile, // Ensure this matches the UserProfile schema
+      new_strategy: newStrategy, // Ensure this is an array of Strategy objects
+      user_confirmed: profileChanged, // Boolean value
+    };
+  
+    console.log('Payload being sent:', payload);
+  
+    try {
+      const res = await DefaultService.updateProfileAiAgentUpdateProfilePatch(payload);
+      setProfileChanged(false); // Reset profileChanged state
+      console.log('Profile updated successfully:', res);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
+    }
   };
 
   useEffect(() => {
@@ -150,10 +192,19 @@ export default function SidebarChat({ profile, userId }: SidebarChatProps) {
           <button
             onClick={sendMessage}
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition mb-2"
           >
             {loading ? 'Sending...' : 'Send'}
           </button>
+
+          {profileChanged && (
+            <button
+              onClick={handleAcceptProfileChanges}
+              className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+            >
+              Accept Profile Changes
+            </button>
+          )}
         </div>
       </div>
 
