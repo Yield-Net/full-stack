@@ -21,7 +21,20 @@ type ChatEntry = {
   strategy?: Strategy[];
 };
 
-export default function SidebarChat() {
+type SidebarChatProps = {
+  profile: {
+    experience_level: string;
+    investment_amount: number;
+    investment_currency: string;
+    investment_goals: string[];
+    investment_horizon: string;
+    preferred_activities: string[];
+    risk_tolerance: string;
+  };
+  userId: string | null;
+};
+
+export default function SidebarChat({ profile, userId }: SidebarChatProps) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([]);
@@ -34,20 +47,16 @@ export default function SidebarChat() {
     setChatHistory((prev) => [...prev, newUserMessage]);
     setLoading(true);
 
+    
     const userProfile = {
-      user_id: '123',
-      risk_tolerance: 'moderate',
-      investment_amount: 1000,
-      investment_currency: 'USDC',
-      investment_horizon: 'medium',
-      experience_level: 'beginner',
-      investment_goals: ['passive_income'],
-      preferred_activities: ['lending', 'staking', 'liquidity_providing'],
+      user_id: userId,
+      ...profile,
     };
-
+    
+    console.log("userProfile", userProfile);
     const res = await DefaultService.handleMessageAiAgentMessagePost({
       user_profile: userProfile,
-      user_message: input
+      user_message: input,
     });
 
     const data = await res;

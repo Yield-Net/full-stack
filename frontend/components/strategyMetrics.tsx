@@ -22,7 +22,6 @@ export default function StrategyMetrics({ strategy }) {
     );
   }
 
-  const totalInvestment = 332;
   const totalReturn = strategy.reduce((acc, s) => acc + s.estimated_return, 0);
   const avgApy = strategy.reduce(
     (acc, s) => acc + (s.expected_apy * s.allocation_percent) / 100,
@@ -37,8 +36,7 @@ export default function StrategyMetrics({ strategy }) {
   return (
     <div className="space-y-8">
       {/* Summary Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <MetricCard title="Total Investment" value={`$${totalInvestment}`} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MetricCard title="Estimated Return" value={`$${totalReturn.toFixed(2)}`} />
         <MetricCard title="Average APY" value={`${avgApy.toFixed(2)}%`} />
       </div>

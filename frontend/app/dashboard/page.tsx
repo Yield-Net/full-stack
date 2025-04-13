@@ -99,7 +99,7 @@ export default function Dashboard() {
         <AllocationPieChart data={strategy} />
         <APYBarChart data={strategy} />
       </div>
-      <SidebarChat />
+      <SidebarChat profile={profile} userId={userId} />
     </div>
   );
 }
