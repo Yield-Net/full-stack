@@ -12,7 +12,7 @@ app.include_router(ai_router.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000'],
+    allow_origins=['https://full-stack-indol-six.vercel.app'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
